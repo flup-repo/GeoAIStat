@@ -217,40 +217,42 @@ function App() {
       />
 
       <section className="globe-column">
-        <header className="hero-copy">
-          <span className="eyebrow">Launch slice</span>
-          <h2>Provider-reported adoption, staged as an editorial instrument.</h2>
-          <p>
-            This first implementation uses processed static artifacts and URL-synced controls so the product can be
-            verified locally before live refresh automation is wired in.
-          </p>
-        </header>
+        <div className="globe-frame">
+          <header className="hero-copy globe-stage-copy">
+            <span className="eyebrow">Launch slice</span>
+            <h2>Provider-reported adoption, staged as an editorial instrument.</h2>
+            <p>
+              This first implementation uses processed static artifacts and URL-synced controls so the product can be
+              verified locally before live refresh automation is wired in.
+            </p>
+          </header>
 
-        {sceneQuality.webgl ? (
-          <Suspense
-            fallback={
-              <div className="fallback-panel glass-panel">
-                <div className="fallback-copy">
-                  <span className="eyebrow">Loading scene</span>
-                  <h2>Rendering globe</h2>
-                  <p>Preparing the Three.js scene chunk for the current dataset.</p>
+          {sceneQuality.webgl ? (
+            <Suspense
+              fallback={
+                <div className="fallback-panel glass-panel">
+                  <div className="fallback-copy">
+                    <span className="eyebrow">Loading scene</span>
+                    <h2>Rendering globe</h2>
+                    <p>Preparing the Three.js scene chunk for the current dataset.</p>
+                  </div>
                 </div>
-              </div>
-            }
-          >
-            <GlobeScene
-              observations={periodObservations}
-              selectedObservation={selectedObservation}
-              hoveredGeoId={hoveredGeoId}
-              onHover={setHoveredGeoId}
-              onSelect={(geoId) => patchQueryState({ selection: geoId })}
-              colorRamp={dataset.colorRamp}
-              sceneQuality={sceneQuality}
-            />
-          </Suspense>
-        ) : (
-          <GlobeFallback dataset={dataset} observations={periodObservations} selectedObservation={selectedObservation} />
-        )}
+              }
+            >
+              <GlobeScene
+                observations={periodObservations}
+                selectedObservation={selectedObservation}
+                hoveredGeoId={hoveredGeoId}
+                onHover={setHoveredGeoId}
+                onSelect={(geoId) => patchQueryState({ selection: geoId })}
+                colorRamp={dataset.colorRamp}
+                sceneQuality={sceneQuality}
+              />
+            </Suspense>
+          ) : (
+            <GlobeFallback dataset={dataset} observations={periodObservations} selectedObservation={selectedObservation} />
+          )}
+        </div>
 
         <Legend ramp={dataset.colorRamp} label={dataset.metricLabel} />
         <Timeline periods={dataset.periods} activePeriodId={queryState.period} onChange={(period) => patchQueryState({ period })} />

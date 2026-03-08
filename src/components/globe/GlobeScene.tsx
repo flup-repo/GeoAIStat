@@ -89,7 +89,7 @@ function Continents() {
             if (geom.attributes.position && geom.attributes.position.count > 0) {
               geos.push(geom)
             }
-          } catch (err) {
+          } catch {
             // ignore malformed geometries
           }
         })
@@ -189,9 +189,9 @@ export function GlobeScene({
 }: GlobeSceneProps) {
   return (
     <div className="globe-stage">
-      <Canvas camera={{ fov: 36, position: [0, 0.4, 4.6] }} dpr={[1, 2]}>
+      <Canvas camera={{ fov: 32, position: [0, 0.16, 3.55] }} dpr={[1, 2]}>
         <color attach="background" args={['#01040a']} />
-        <fog attach="fog" args={['#01040a', 3.5, 9.0]} />
+        <fog attach="fog" args={['#01040a', 2.8, 7.4]} />
         <ambientLight intensity={1.1} />
         {/* Rim light simulating sun behind/off-side */}
         <directionalLight position={[4, 1.8, -1]} intensity={3.5} color="#cff0ff" />
@@ -209,7 +209,7 @@ export function GlobeScene({
           speed={sceneQuality.reducedMotion ? 0 : 0.6}
         />
         <Suspense fallback={null}>
-          <group rotation={[0.26, 0.9, 0]}>
+          <group position={[0, -0.12, 0]} rotation={[0.22, 0.92, 0]} scale={1.2}>
             <GlobeBaseSurface />
             <Atmosphere />
             <Graticule />
@@ -231,10 +231,10 @@ export function GlobeScene({
           enablePan={false}
           enableDamping={true}
           dampingFactor={0.06}
-          minDistance={1.3}
-          maxDistance={6.0}
+          minDistance={1.2}
+          maxDistance={5.0}
           autoRotate={sceneQuality.autoRotate}
-          autoRotateSpeed={0.4}
+          autoRotateSpeed={0.34}
         />
         {sceneQuality.webgl && !sceneQuality.reducedMotion && (
           <EffectComposer>
