@@ -1,0 +1,374 @@
+{
+  "appName": "GeoAIStat",
+  "generatedAt": "2026-03-08T13:54:17.059Z",
+  "lastRefresh": "2026-03-08T13:54:17.059Z",
+  "defaultStoryId": "coastal-acceleration",
+  "providers": [
+    {
+      "id": "openai",
+      "label": "OpenAI Signals",
+      "blurb": "Broad public adoption and developer-depth style snapshots."
+    },
+    {
+      "id": "anthropic",
+      "label": "Anthropic Economic Index",
+      "blurb": "Knowledge-work and infrastructure-oriented geography slices."
+    }
+  ],
+  "datasets": [
+    {
+      "provider": "openai",
+      "geoType": "country",
+      "metricId": "consumer_reach",
+      "metricLabel": "Consumer reach",
+      "description": "Representative share-style signal for broad public adoption by country.",
+      "valueType": "share",
+      "unit": "%",
+      "colorRamp": {
+        "low": "#155e75",
+        "high": "#f59e0b"
+      },
+      "periods": [
+        {
+          "id": "2025-10",
+          "label": "Oct 2025",
+          "publicationDate": "2025-10-25"
+        },
+        {
+          "id": "2026-01",
+          "label": "Jan 2026",
+          "publicationDate": "2026-01-28"
+        },
+        {
+          "id": "2026-02",
+          "label": "Feb 2026",
+          "publicationDate": "2026-02-28"
+        }
+      ],
+      "defaultPeriodId": "2026-02",
+      "defaultSelection": "USA",
+      "checksum": "e1cacba213b0",
+      "availableGeographies": [
+        "USA",
+        "SGP",
+        "GBR",
+        "CAN",
+        "AUS",
+        "IND",
+        "DEU",
+        "FRA",
+        "JPN",
+        "BRA"
+      ],
+      "comparabilityGroup": "openai_consumer_reach"
+    },
+    {
+      "provider": "openai",
+      "geoType": "country",
+      "metricId": "developer_depth",
+      "metricLabel": "Developer depth",
+      "description": "Representative score-style signal for advanced developer usage depth by country.",
+      "valueType": "score",
+      "colorRamp": {
+        "low": "#1d4ed8",
+        "high": "#f97316"
+      },
+      "periods": [
+        {
+          "id": "2025-10",
+          "label": "Oct 2025",
+          "publicationDate": "2025-10-25"
+        },
+        {
+          "id": "2026-01",
+          "label": "Jan 2026",
+          "publicationDate": "2026-01-28"
+        },
+        {
+          "id": "2026-02",
+          "label": "Feb 2026",
+          "publicationDate": "2026-02-28"
+        }
+      ],
+      "defaultPeriodId": "2026-02",
+      "defaultSelection": "SGP",
+      "checksum": "e2b52a8a1f96",
+      "availableGeographies": [
+        "SGP",
+        "USA",
+        "IND",
+        "GBR",
+        "CAN",
+        "AUS",
+        "DEU",
+        "JPN",
+        "FRA",
+        "BRA"
+      ],
+      "comparabilityGroup": "openai_developer_depth"
+    },
+    {
+      "provider": "openai",
+      "geoType": "us_state",
+      "metricId": "consumer_reach",
+      "metricLabel": "Consumer reach",
+      "description": "Representative state-level consumer adoption signal within the US drill-down.",
+      "valueType": "share",
+      "unit": "%",
+      "colorRamp": {
+        "low": "#155e75",
+        "high": "#f59e0b"
+      },
+      "periods": [
+        {
+          "id": "2025-10",
+          "label": "Oct 2025",
+          "publicationDate": "2025-10-25"
+        },
+        {
+          "id": "2026-01",
+          "label": "Jan 2026",
+          "publicationDate": "2026-01-28"
+        },
+        {
+          "id": "2026-02",
+          "label": "Feb 2026",
+          "publicationDate": "2026-02-28"
+        }
+      ],
+      "defaultPeriodId": "2026-02",
+      "defaultSelection": "CA",
+      "checksum": "5c695218f3ae",
+      "availableGeographies": [
+        "CA",
+        "NY",
+        "WA",
+        "MA",
+        "TX",
+        "VA",
+        "IL",
+        "CO"
+      ],
+      "comparabilityGroup": "openai_consumer_reach"
+    },
+    {
+      "provider": "openai",
+      "geoType": "us_state",
+      "metricId": "developer_depth",
+      "metricLabel": "Developer depth",
+      "description": "Representative state-level advanced usage depth for development-heavy workflows.",
+      "valueType": "score",
+      "colorRamp": {
+        "low": "#1d4ed8",
+        "high": "#f97316"
+      },
+      "periods": [
+        {
+          "id": "2025-10",
+          "label": "Oct 2025",
+          "publicationDate": "2025-10-25"
+        },
+        {
+          "id": "2026-01",
+          "label": "Jan 2026",
+          "publicationDate": "2026-01-28"
+        },
+        {
+          "id": "2026-02",
+          "label": "Feb 2026",
+          "publicationDate": "2026-02-28"
+        }
+      ],
+      "defaultPeriodId": "2026-02",
+      "defaultSelection": "CA",
+      "checksum": "aa329efb145c",
+      "availableGeographies": [
+        "CA",
+        "WA",
+        "MA",
+        "NY",
+        "TX",
+        "VA",
+        "CO",
+        "IL"
+      ],
+      "comparabilityGroup": "openai_developer_depth"
+    },
+    {
+      "provider": "anthropic",
+      "geoType": "country",
+      "metricId": "knowledge_work",
+      "metricLabel": "Knowledge work intensity",
+      "description": "Representative index-style signal for professional knowledge-work concentration by country.",
+      "valueType": "index",
+      "colorRamp": {
+        "low": "#0f766e",
+        "high": "#fb7185"
+      },
+      "periods": [
+        {
+          "id": "2025-08",
+          "label": "Aug 2025",
+          "publicationDate": "2025-08-18"
+        },
+        {
+          "id": "2025-11",
+          "label": "Nov 2025",
+          "publicationDate": "2025-11-16"
+        },
+        {
+          "id": "2026-02",
+          "label": "Feb 2026",
+          "publicationDate": "2026-02-18"
+        }
+      ],
+      "defaultPeriodId": "2026-02",
+      "defaultSelection": "SGP",
+      "checksum": "c268f2f26752",
+      "availableGeographies": [
+        "SGP",
+        "USA",
+        "GBR",
+        "CAN",
+        "AUS",
+        "DEU",
+        "FRA",
+        "IND",
+        "JPN",
+        "BRA"
+      ],
+      "comparabilityGroup": "anthropic_knowledge_work"
+    },
+    {
+      "provider": "anthropic",
+      "geoType": "country",
+      "metricId": "energy_alignment",
+      "metricLabel": "Infrastructure alignment",
+      "description": "Representative score-style signal for geography and energy alignment in Anthropic-style reporting.",
+      "valueType": "score",
+      "colorRamp": {
+        "low": "#0ea5e9",
+        "high": "#f43f5e"
+      },
+      "periods": [
+        {
+          "id": "2025-08",
+          "label": "Aug 2025",
+          "publicationDate": "2025-08-18"
+        },
+        {
+          "id": "2025-11",
+          "label": "Nov 2025",
+          "publicationDate": "2025-11-16"
+        },
+        {
+          "id": "2026-02",
+          "label": "Feb 2026",
+          "publicationDate": "2026-02-18"
+        }
+      ],
+      "defaultPeriodId": "2026-02",
+      "defaultSelection": "SGP",
+      "checksum": "db4786f76520",
+      "availableGeographies": [
+        "SGP",
+        "AUS",
+        "USA",
+        "CAN",
+        "JPN",
+        "GBR",
+        "DEU",
+        "IND",
+        "FRA",
+        "BRA"
+      ],
+      "comparabilityGroup": "anthropic_energy_alignment"
+    },
+    {
+      "provider": "anthropic",
+      "geoType": "us_state",
+      "metricId": "knowledge_work",
+      "metricLabel": "Knowledge work intensity",
+      "description": "Representative state-level knowledge-work concentration within Anthropic-style reporting.",
+      "valueType": "index",
+      "colorRamp": {
+        "low": "#0f766e",
+        "high": "#fb7185"
+      },
+      "periods": [
+        {
+          "id": "2025-08",
+          "label": "Aug 2025",
+          "publicationDate": "2025-08-18"
+        },
+        {
+          "id": "2025-11",
+          "label": "Nov 2025",
+          "publicationDate": "2025-11-16"
+        },
+        {
+          "id": "2026-02",
+          "label": "Feb 2026",
+          "publicationDate": "2026-02-18"
+        }
+      ],
+      "defaultPeriodId": "2026-02",
+      "defaultSelection": "CA",
+      "checksum": "fe7de15b1441",
+      "availableGeographies": [
+        "CA",
+        "WA",
+        "MA",
+        "NY",
+        "VA",
+        "CO",
+        "IL",
+        "TX"
+      ],
+      "comparabilityGroup": "anthropic_knowledge_work"
+    },
+    {
+      "provider": "anthropic",
+      "geoType": "us_state",
+      "metricId": "energy_alignment",
+      "metricLabel": "Infrastructure alignment",
+      "description": "Representative state-level infrastructure and energy alignment signal.",
+      "valueType": "score",
+      "colorRamp": {
+        "low": "#0ea5e9",
+        "high": "#f43f5e"
+      },
+      "periods": [
+        {
+          "id": "2025-08",
+          "label": "Aug 2025",
+          "publicationDate": "2025-08-18"
+        },
+        {
+          "id": "2025-11",
+          "label": "Nov 2025",
+          "publicationDate": "2025-11-16"
+        },
+        {
+          "id": "2026-02",
+          "label": "Feb 2026",
+          "publicationDate": "2026-02-18"
+        }
+      ],
+      "defaultPeriodId": "2026-02",
+      "defaultSelection": "TX",
+      "checksum": "e987d12cc49d",
+      "availableGeographies": [
+        "TX",
+        "CO",
+        "CA",
+        "WA",
+        "VA",
+        "NY",
+        "MA",
+        "IL"
+      ],
+      "comparabilityGroup": "anthropic_energy_alignment"
+    }
+  ]
+}

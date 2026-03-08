@@ -1,0 +1,41 @@
+[
+  {
+    "id": "coastal-acceleration",
+    "kicker": "US cluster",
+    "title": "California keeps the highest composite sample score.",
+    "description": "This preset opens the state view where coastal and research-heavy markets lead the current launch dataset.",
+    "query": {
+      "provider": "openai",
+      "metric": "consumer_reach",
+      "period": "2026-02",
+      "mode": "us",
+      "selection": "CA"
+    }
+  },
+  {
+    "id": "dense-global-hubs",
+    "kicker": "Global nodes",
+    "title": "Singapore surfaces as a dense strategic node.",
+    "description": "A compact geography can still rank at the top when the metric emphasizes knowledge-work intensity over raw population.",
+    "query": {
+      "provider": "anthropic",
+      "metric": "knowledge_work",
+      "period": "2026-02",
+      "mode": "world",
+      "selection": "SGP"
+    }
+  },
+  {
+    "id": "developer-belt",
+    "kicker": "Engineering depth",
+    "title": "Developer-heavy regions remain clustered around a few repeat leaders.",
+    "description": "This preset focuses on the higher-depth usage metric rather than broad consumer reach.",
+    "query": {
+      "provider": "openai",
+      "metric": "developer_depth",
+      "period": "2026-02",
+      "mode": "world",
+      "selection": "USA"
+    }
+  }
+]
