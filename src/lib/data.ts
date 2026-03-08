@@ -3,9 +3,11 @@ import type { ZodType } from 'zod'
 import {
   appManifestSchema,
   datasetArtifactSchema,
+  geographyAssetSchema,
   storyCollectionSchema,
   type AppManifest,
   type DatasetArtifact,
+  type GeographyAsset,
   type GeographyMode,
   type ProviderId,
   type StoryPreset,
@@ -14,6 +16,7 @@ import {
 let manifestPromise: Promise<AppManifest> | null = null
 let storiesPromise: Promise<StoryPreset[]> | null = null
 const datasetCache = new Map<string, Promise<DatasetArtifact>>()
+const geographyCache = new Map<GeographyMode, Promise<GeographyAsset>>()
 
 async function fetchAndParse<T>(path: string, schema: ZodType<T>): Promise<T> {
   const response = await fetch(path)
@@ -48,4 +51,12 @@ export function loadDataset(
   }
 
   return datasetCache.get(key) as Promise<DatasetArtifact>
+}
+
+export function loadGeography(mode: GeographyMode): Promise<GeographyAsset> {
+  if (!geographyCache.has(mode)) {
+    geographyCache.set(mode, fetchAndParse(`/data/geometry/${mode}.json`, geographyAssetSchema))
+  }
+
+  return geographyCache.get(mode) as Promise<GeographyAsset>
 }

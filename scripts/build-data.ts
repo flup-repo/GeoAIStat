@@ -3,15 +3,17 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
+import { buildGeographyAssets } from './geography.ts'
 import { anthropicDatasets } from './providers/anthropic.ts'
 import { openaiDatasets } from './providers/openai.ts'
 import type { ProviderDatasetSeed } from './providers/shared.ts'
-import type { AppManifest, DatasetArtifact, Observation, StoryPreset } from '../src/types/data.ts'
+import type { AppManifest, DatasetArtifact, GeographyAsset, Observation, StoryPreset } from '../src/types/data.ts'
 
 type BuildArtifacts = {
   manifest: AppManifest
   stories: StoryPreset[]
   datasets: Record<string, DatasetArtifact>
+  geography: Record<'world' | 'us', GeographyAsset>
 }
 
 function round(value: number): number {
@@ -142,6 +144,7 @@ export function buildArtifactsFromProviders(fetchedAt: string = new Date().toISO
       return [`${mode}:${seed.provider}:${seed.metricId}`, dataset]
     }),
   )
+  const geography = buildGeographyAssets(fetchedAt)
 
   const manifest: AppManifest = {
     appName: 'GeoAIStat',
@@ -185,18 +188,22 @@ export function buildArtifactsFromProviders(fetchedAt: string = new Date().toISO
     manifest,
     stories: buildStories(),
     datasets,
+    geography,
   }
 }
 
-export async function writeArtifacts(outputRoot: string) {
-  const { manifest, stories, datasets } = buildArtifactsFromProviders()
+export async function writeArtifacts(outputRoot: string, fetchedAt: string = new Date().toISOString()) {
+  const { manifest, stories, datasets, geography } = buildArtifactsFromProviders(fetchedAt)
   await mkdir(path.join(outputRoot, 'data', 'world', 'openai'), { recursive: true })
   await mkdir(path.join(outputRoot, 'data', 'world', 'anthropic'), { recursive: true })
   await mkdir(path.join(outputRoot, 'data', 'us', 'openai'), { recursive: true })
   await mkdir(path.join(outputRoot, 'data', 'us', 'anthropic'), { recursive: true })
+  await mkdir(path.join(outputRoot, 'data', 'geometry'), { recursive: true })
 
   await writeFile(path.join(outputRoot, 'data', 'manifest.json'), JSON.stringify(manifest, null, 2))
   await writeFile(path.join(outputRoot, 'data', 'stories.json'), JSON.stringify(stories, null, 2))
+  await writeFile(path.join(outputRoot, 'data', 'geometry', 'world.json'), JSON.stringify(geography.world, null, 2))
+  await writeFile(path.join(outputRoot, 'data', 'geometry', 'us.json'), JSON.stringify(geography.us, null, 2))
 
   await Promise.all(
     Object.entries(datasets).map(async ([key, dataset]) => {

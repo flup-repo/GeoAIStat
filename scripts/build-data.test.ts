@@ -1,6 +1,10 @@
+import { mkdtemp, readFile } from 'node:fs/promises'
+import os from 'node:os'
+import path from 'node:path'
+
 import { describe, expect, it } from 'vitest'
 
-import { buildArtifactsFromProviders } from './build-data.ts'
+import { buildArtifactsFromProviders, writeArtifacts } from './build-data.ts'
 
 describe('build-data', () => {
   it('builds a manifest and dataset artifacts for both scopes', () => {
@@ -23,5 +27,19 @@ describe('build-data', () => {
     expect(february[0].rank).toBe(1)
     expect(february.at(-1)?.geoId).toBe('BRA')
     expect(february.at(-1)?.valueNormalized).toBe(0)
+  })
+
+  it('emits local geometry artifacts alongside data outputs', async () => {
+    const outputRoot = await mkdtemp(path.join(os.tmpdir(), 'globe-artifacts-'))
+    await writeArtifacts(outputRoot, '2026-03-08T00:00:00.000Z')
+
+    const worldGeometry = JSON.parse(await readFile(path.join(outputRoot, 'data', 'geometry', 'world.json'), 'utf8'))
+    const usGeometry = JSON.parse(await readFile(path.join(outputRoot, 'data', 'geometry', 'us.json'), 'utf8'))
+
+    expect(worldGeometry.mode).toBe('world')
+    expect(worldGeometry.features).toHaveLength(10)
+    expect(worldGeometry.features.find((feature: { geoId: string }) => feature.geoId === 'SGP')).toBeTruthy()
+    expect(usGeometry.mode).toBe('us')
+    expect(usGeometry.features).toHaveLength(8)
   })
 })

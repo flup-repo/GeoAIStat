@@ -42,6 +42,15 @@ function getDatasetsFor(
   )
 }
 
+export function findDatasetMeta(
+  manifest: AppManifest,
+  provider: string,
+  metricId: string,
+  mode: GeographyMode,
+): ManifestDataset | undefined {
+  return getDatasetsFor(manifest, provider, mode).find((dataset) => dataset.metricId === metricId)
+}
+
 function getFallbackDataset(manifest: AppManifest): ManifestDataset {
   return manifest.datasets[0]
 }

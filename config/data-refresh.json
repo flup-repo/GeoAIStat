@@ -1,0 +1,13 @@
+{
+  "defaultCadenceHours": 168,
+  "providers": {
+    "openai": {
+      "enabled": true,
+      "cadenceHours": 168
+    },
+    "anthropic": {
+      "enabled": true,
+      "cadenceHours": 336
+    }
+  }
+}

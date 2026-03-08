@@ -16,6 +16,26 @@ export const colorRampSchema = z.object({
   high: z.string(),
 })
 
+export const geoJsonGeometrySchema = z.object({
+  type: z.enum(['Polygon', 'MultiPolygon']),
+  coordinates: z.any(),
+})
+
+export const geographyFeatureSchema = z.object({
+  geoType: geoTypeSchema,
+  geoId: z.string(),
+  geoLabel: z.string(),
+  latitude: z.number(),
+  longitude: z.number(),
+  geometry: geoJsonGeometrySchema,
+})
+
+export const geographyAssetSchema = z.object({
+  mode: geographyModeSchema,
+  generatedAt: z.string(),
+  features: z.array(geographyFeatureSchema),
+})
+
 export const observationSchema = z.object({
   geoType: geoTypeSchema,
   geoId: z.string(),
@@ -85,6 +105,16 @@ export const appManifestSchema = z.object({
   datasets: z.array(manifestDatasetSchema),
 })
 
+export const refreshProviderConfigSchema = z.object({
+  enabled: z.boolean(),
+  cadenceHours: z.number().int().positive(),
+})
+
+export const refreshConfigSchema = z.object({
+  defaultCadenceHours: z.number().int().positive(),
+  providers: z.record(providerSchema, refreshProviderConfigSchema),
+})
+
 export const storyPresetSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -115,9 +145,14 @@ export type GeographyMode = z.infer<typeof geographyModeSchema>
 export type ValueType = z.infer<typeof valueTypeSchema>
 export type PeriodMeta = z.infer<typeof periodMetaSchema>
 export type ColorRamp = z.infer<typeof colorRampSchema>
+export type GeoJsonGeometry = z.infer<typeof geoJsonGeometrySchema>
+export type GeographyFeature = z.infer<typeof geographyFeatureSchema>
+export type GeographyAsset = z.infer<typeof geographyAssetSchema>
 export type Observation = z.infer<typeof observationSchema>
 export type DatasetArtifact = z.infer<typeof datasetArtifactSchema>
 export type ManifestDataset = z.infer<typeof manifestDatasetSchema>
 export type AppManifest = z.infer<typeof appManifestSchema>
+export type RefreshProviderConfig = z.infer<typeof refreshProviderConfigSchema>
+export type RefreshConfig = z.infer<typeof refreshConfigSchema>
 export type StoryPreset = z.infer<typeof storyPresetSchema>
 export type QueryState = z.infer<typeof queryStateSchema>

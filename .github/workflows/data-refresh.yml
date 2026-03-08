@@ -1,0 +1,42 @@
+name: Data Refresh
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Force a data rebuild even when cadence has not elapsed
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' && inputs.force || 'false' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run refresh:data
+
+      - run: git diff --quiet -- public/data
+        id: diff
+        continue-on-error: true
+
+      - if: steps.diff.outcome == 'failure'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add public/data
+          git commit -m "chore: refresh data artifacts"
+          git push

@@ -5,12 +5,13 @@ import { DetailSheet } from './components/panels/DetailSheet.tsx'
 import { GlobeFallback } from './components/panels/GlobeFallback.tsx'
 import { Legend } from './components/panels/Legend.tsx'
 import { Timeline } from './components/panels/Timeline.tsx'
-import { loadDataset, loadManifest, loadStories } from './lib/data.ts'
-import { sanitizeQueryState, serializeQueryState } from './lib/queryState.ts'
+import { loadDataset, loadGeography, loadManifest, loadStories } from './lib/data.ts'
+import { findDatasetMeta, sanitizeQueryState, serializeQueryState } from './lib/queryState.ts'
 import { detectSceneQuality } from './lib/scene-quality.ts'
 import type {
   AppManifest,
   DatasetArtifact,
+  GeographyAsset,
   ManifestDataset,
   Observation,
   ProviderId,
@@ -28,6 +29,7 @@ function App() {
   const [stories, setStories] = useState<StoryPreset[]>([])
   const [queryState, setQueryState] = useState<QueryState | null>(null)
   const [dataset, setDataset] = useState<DatasetArtifact | null>(null)
+  const [geography, setGeography] = useState<GeographyAsset | null>(null)
   const [hoveredGeoId, setHoveredGeoId] = useState<string | null>(null)
   const [sceneQuality] = useState(() => detectSceneQuality())
   const [error, setError] = useState<string | null>(null)
@@ -75,8 +77,12 @@ function App() {
 
     async function loadCurrentDataset() {
       try {
-        const loadedDataset = await loadDataset(activeQuery.mode, activeQuery.provider, activeQuery.metric)
+        const [loadedDataset, loadedGeography] = await Promise.all([
+          loadDataset(activeQuery.mode, activeQuery.provider, activeQuery.metric),
+          loadGeography(activeQuery.mode),
+        ])
         setDataset(loadedDataset)
+        setGeography(loadedGeography)
       } catch (caughtError) {
         setError(caughtError instanceof Error ? caughtError.message : 'Failed to load dataset.')
       }
@@ -159,7 +165,19 @@ function App() {
     }
 
     startTransition(() => {
-      const params = new URLSearchParams(serializeQueryState({ ...queryState, ...next }))
+      const merged = { ...queryState, ...next }
+      const resolvedDataset =
+        findDatasetMeta(manifest, merged.provider, merged.metric, merged.mode) ??
+        findDatasetMeta(manifest, queryState.provider, queryState.metric, queryState.mode)
+
+      if (resolvedDataset && (next.provider || next.metric || next.mode)) {
+        merged.period = resolvedDataset.defaultPeriodId
+        if (!resolvedDataset.availableGeographies.includes(merged.selection)) {
+          merged.selection = resolvedDataset.defaultSelection
+        }
+      }
+
+      const params = new URLSearchParams(serializeQueryState(merged))
       setQueryState(sanitizeQueryState(params, manifest))
     })
   }
@@ -176,7 +194,7 @@ function App() {
     )
   }
 
-  if (!manifest || !queryState || !dataset || !currentDatasetMeta) {
+  if (!manifest || !queryState || !dataset || !geography || !currentDatasetMeta) {
     return (
       <main className="app-shell loading-shell">
         <div className="glass-panel status-card">
@@ -202,8 +220,8 @@ function App() {
         mode={queryState.mode}
         activeStoryId={activeStory?.id}
         onProviderChange={(provider) => patchQueryState({ provider: provider as ProviderId })}
-        onMetricChange={(metric) => patchQueryState({ metric, selection: currentDatasetMeta.defaultSelection })}
-        onModeChange={(mode) => patchQueryState({ mode, selection: currentDatasetMeta.defaultSelection })}
+        onMetricChange={(metric) => patchQueryState({ metric })}
+        onModeChange={(mode) => patchQueryState({ mode })}
         stories={stories}
         onStorySelect={(storyId) => {
           const story = stories.find((entry) => entry.id === storyId)
@@ -240,6 +258,8 @@ function App() {
               }
             >
               <GlobeScene
+                mode={queryState.mode}
+                geography={geography}
                 observations={periodObservations}
                 selectedObservation={selectedObservation}
                 hoveredGeoId={hoveredGeoId}

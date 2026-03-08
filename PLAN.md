@@ -5,34 +5,32 @@
 - The app is a `React 19 + Vite + TypeScript` single-route experience with URL-synced query state for `provider`, `metric`, `period`, `mode`, and `selection`.
 - The data layer is static-first and locally generated:
   - canonical schemas live in `src/types/data.ts`
-  - sample provider seeds exist for `openai` and `anthropic`
-  - `scripts/build-data.ts` emits `public/data/manifest.json`, dataset artifacts, and story presets
+  - curated provider snapshot seeds still exist for `openai` and `anthropic`
+  - `scripts/build-data.ts` now emits manifest, datasets, story presets, and local geometry artifacts
+  - `scripts/refresh-data.ts` evaluates cadence and can rebuild artifacts when a refresh is due
 - The current globe experience is implemented as a lazy-loaded Three scene with:
   - atmosphere shell
   - star field
   - graticule lines
   - textured globe base using `public/earth-topology.png`
-  - pulsing point markers for each observation
-  - HTML tooltip on hover/selection
+  - filled country and US state polygons from local build artifacts
+  - mesh-based hover and selection
+  - mode-aware camera framing and selection transitions
+  - HTML tooltip and selection beacon on active geography
   - reduced-motion / no-WebGL fallback panel
 - The current UI shell includes:
   - left control rail
   - right detail sheet with sparkline and source links
   - legend
   - bottom timeline scrubber
-- Country geography has started, but only as a runtime-fetched Natural Earth wireframe overlay inside `GlobeScene.tsx`.
 - Verified locally on 2026-03-08:
   - `npm run test:run`
   - `npm run lint`
   - `npm run build`
 - Current gaps confirmed during review:
-  - runtime dependency on GitHub raw for country geometry
-  - no local build-time geography asset pipeline
-  - no filled country polygons and no US state geometry rendering
-  - selection still depends on point markers rather than geography meshes
-  - provider adapters still use seeded sample data rather than live upstream parsing
-  - no cadence-aware refresh config or GitHub Actions workflow
-  - no integration or E2E coverage
+  - provider adapters still use curated sample values rather than real upstream parsing
+  - there is cadence-aware rebuild logic, but no upstream provider fetch yet
+  - integration coverage exists for artifact emission and cadence decisions, but there is still no browser E2E suite
   - build still warns about a large `three-core` production chunk
 
 ## Product Direction
@@ -56,45 +54,42 @@ Done now:
 - Manual chunking in `vite.config.ts` for React and Three-related vendor code.
 
 Follow next:
-- Replace the runtime GitHub country wireframe fetch with local, versioned geometry assets generated during the build step.
-- Render actual country and US state polygons, not just points and line segments.
-- Move selection and hover to geography meshes so users can interact with real shapes.
-- Improve camera framing, selection transitions, and mobile treatment once polygon rendering exists.
+- Tighten the camera choreography and mobile treatment now that polygon rendering exists.
 - Revisit bundle size after the geometry path is stable; the `three-core` chunk is still large enough to trigger a Vite warning.
 
 ### Data Pipeline
 Done now:
 - Canonical schema and manifest types are in place.
-- Seed adapters for OpenAI and Anthropic produce normalized sample datasets.
-- `build:data` computes normalized values, ranks, checksums, manifest entries, and story presets.
+- Seed adapters for OpenAI and Anthropic produce normalized curated datasets.
+- `build:data` computes normalized values, ranks, checksums, manifest entries, story presets, and render-ready geometry artifacts.
 - Static artifacts are emitted into `public/data/`.
+- Local geometry is generated from versioned atlas packages instead of runtime network fetches.
 
 Follow next:
-- Replace seeded values with real upstream ingestion and mapping for the chosen provider releases.
+- Replace curated values with real upstream ingestion and mapping for the chosen provider releases.
 - Add validation for missing, partial, or changed upstream snapshots.
-- Join geography boundaries during the build so the client receives render-ready local assets.
-- Add a small refresh config file that tracks cadence, enabled providers, and manual override behavior.
+- Consider moving provider source snapshots out of inline TypeScript and into raw checked-in inputs or fetched upstream artifacts.
 
 ### Delivery and Operations
 Done now:
 - Static build path works locally with no backend dependency.
 - The app can be built and previewed from generated artifacts.
+- `config/data-refresh.json` exists and defines provider cadence.
+- `scripts/refresh-data.ts` can skip or rebuild based on cadence or force mode.
+- A scheduled and manually triggerable GitHub Actions workflow is present for artifact refreshes.
 
 Follow next:
-- Add `config/data-refresh.json`.
-- Add cadence-aware refresh gating against manifest state.
-- Add a scheduled and manually triggerable GitHub Actions refresh workflow.
-- Defer Vercel/GitHub deployment automation until data ingestion and geography rendering are stable enough to avoid churn.
+- Wire the refresh workflow to real upstream fetch/parsing once provider ingestion is implemented.
+- Defer Vercel/GitHub deployment automation until live data ingestion is stable enough to avoid churn.
 
 ### Testing and Verification
 Done now:
 - Unit coverage exists for query-state sanitization/serialization.
 - Unit coverage exists for data build normalization and ranking.
+- Integration-style coverage exists for artifact emission, geometry output, and refresh decision logic.
 - Current repo state passes `test`, `lint`, and `build` locally.
 
 Follow next:
-- Add integration tests for artifact emission and checksum stability.
-- Add tests for cadence gating and refresh decisions.
 - Add E2E coverage for:
   - globe load
   - provider / metric / mode / period URL sync
@@ -103,18 +98,16 @@ Follow next:
   - mobile behavior
 
 ## Improvement Notes From This Review
-- The biggest implementation risk is the runtime geometry fetch in `src/components/globe/GlobeScene.tsx`. It creates an external availability dependency for a feature that should be part of the shipped app.
-- Geography rendering is partially started, but not in the right form yet for final UX. The next step should be local build-time geometry plus polygon interaction, not more polish on marker-only selection.
+- The biggest product gap is now data provenance rather than rendering. The geometry path is local and deterministic, but provider values are still curated inputs.
+- The globe interaction model is now in the right place architecturally: geometry is generated at build time and selection happens on meshes instead of marker proxies.
 - The current app architecture is solid enough to keep: query-state contract, static artifact flow, typed schemas, lazy scene loading, and fallback handling are all worth preserving.
 - Performance work should be focused, not premature. Do a targeted pass after polygon assets and live data are in place, then reduce the `three-core` bundle and any unnecessary scene work.
 
 ## Next Execution Order
-1. Move geography data into the local build pipeline and render real country polygons plus US state geometry.
-2. Replace seeded provider values with real upstream ingestion and add validation for incomplete or changed source snapshots.
-3. Shift interactions from point markers to geography meshes, then improve camera framing, hover behavior, and mobile UX.
-4. Add cadence config and GitHub Actions refresh automation.
-5. Expand integration and E2E coverage around the stabilized data and interaction model.
-6. Do a focused performance and deployment pass after the above is stable.
+1. Replace curated provider values with real upstream ingestion and add validation for incomplete or changed source snapshots.
+2. Add browser E2E coverage around globe load, URL sync, geography selection, fallback rendering, and mobile layout.
+3. Do a focused performance pass on the `three-core` chunk and scene work now that the geometry path is stable.
+4. Revisit deployment automation after live data ingestion is stable.
 
 ## Assumptions
 - v1 remains public and read-only.
