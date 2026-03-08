@@ -108,4 +108,3 @@ npm run build
 - there is no browser E2E suite yet
 - the production build still warns about the large `three-core` chunk
 
-For a more detailed implementation snapshot and remaining roadmap, see [PLAN.md](/Users/flaviu/work/Projects/globe/PLAN.md).
