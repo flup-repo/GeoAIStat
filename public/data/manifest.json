@@ -1,7 +1,7 @@
 {
   "appName": "GeoAIStat",
-  "generatedAt": "2026-05-06T07:02:09.093Z",
-  "lastRefresh": "2026-05-06T07:02:09.093Z",
+  "generatedAt": "2026-05-13T07:09:07.330Z",
+  "lastRefresh": "2026-05-13T07:09:07.330Z",
   "defaultStoryId": "coastal-acceleration",
   "providers": [
     {
@@ -47,7 +47,7 @@
       ],
       "defaultPeriodId": "2026-02",
       "defaultSelection": "USA",
-      "checksum": "d08d918136f4",
+      "checksum": "8a7e2ce3ca77",
       "availableGeographies": [
         "USA",
         "SGP",
@@ -92,7 +92,7 @@
       ],
       "defaultPeriodId": "2026-02",
       "defaultSelection": "SGP",
-      "checksum": "7b801652f0c9",
+      "checksum": "ab60904fd4bd",
       "availableGeographies": [
         "SGP",
         "USA",
@@ -138,7 +138,7 @@
       ],
       "defaultPeriodId": "2026-02",
       "defaultSelection": "CA",
-      "checksum": "57c659ea0ce0",
+      "checksum": "3740b518a118",
       "availableGeographies": [
         "CA",
         "NY",
@@ -181,7 +181,7 @@
       ],
       "defaultPeriodId": "2026-02",
       "defaultSelection": "CA",
-      "checksum": "e60445fa1fa7",
+      "checksum": "0cc2cc39519e",
       "availableGeographies": [
         "CA",
         "WA",
@@ -224,7 +224,7 @@
       ],
       "defaultPeriodId": "2026-02",
       "defaultSelection": "SGP",
-      "checksum": "fc6a6afbcb61",
+      "checksum": "0b2116b1d31e",
       "availableGeographies": [
         "SGP",
         "USA",
@@ -269,7 +269,7 @@
       ],
       "defaultPeriodId": "2026-02",
       "defaultSelection": "SGP",
-      "checksum": "e7aa3ad632f7",
+      "checksum": "69398190e4f4",
       "availableGeographies": [
         "SGP",
         "AUS",
@@ -314,7 +314,7 @@
       ],
       "defaultPeriodId": "2026-02",
       "defaultSelection": "CA",
-      "checksum": "bd2fd201c303",
+      "checksum": "394b870527c7",
       "availableGeographies": [
         "CA",
         "WA",
@@ -357,7 +357,7 @@
       ],
       "defaultPeriodId": "2026-02",
       "defaultSelection": "TX",
-      "checksum": "63121f37d3d8",
+      "checksum": "80c348a4a237",
       "availableGeographies": [
         "TX",
         "CO",
